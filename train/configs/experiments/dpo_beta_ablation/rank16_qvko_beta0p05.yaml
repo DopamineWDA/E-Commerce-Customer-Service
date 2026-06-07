@@ -1,0 +1,54 @@
+model:
+  model_name_or_path: /home/txs/work/zyp/LLM/Qwen3-8B
+  sft_adapter_path: /home/txs/work/zyp/SFT_DPO/train/outputs/sft_ablation/rank16_qvko/checkpoint
+  max_seq_length: 1024
+dataset:
+  train_file: /home/txs/work/zyp/SFT_DPO/data_dpo/dpo_pairs.jsonl
+  val_file: null
+  validation_split: 0.1
+  split_seed: 42
+  preprocessing_num_workers: 4
+  dataloader_num_workers: 2
+  max_train_samples: null
+  max_eval_samples: null
+dpo:
+  beta: 0.05
+  loss_type: sigmoid
+  model_adapter_name: default
+  ref_adapter_name: ref
+  label_smoothing: 0.0
+  precompute_ref_log_probs: false
+distributed:
+  deepspeed: null
+training:
+  seed: 42
+  per_device_train_batch_size: 2
+  per_device_eval_batch_size: 2
+  gradient_accumulation_steps: 16
+  learning_rate: 5.0e-07
+  num_train_epochs: 2.0
+  lr_scheduler_type: cosine
+  warmup_ratio: 0.1
+  weight_decay: 0.0
+  max_grad_norm: 1.0
+  gradient_checkpointing: true
+  gradient_checkpointing_kwargs:
+    use_reentrant: false
+  ddp_find_unused_parameters: false
+  overwrite_output_dir: false
+  resume_from_checkpoint: null
+logging:
+  logging_steps: 5
+  save_strategy: epoch
+  eval_strategy: epoch
+  save_total_limit: 2
+  load_best_model_at_end: true
+  metric_for_best_model: rewards/margins
+  greater_is_better: true
+  report_to: none
+output:
+  output_dir: /home/txs/work/zyp/SFT_DPO/train/outputs/dpo_beta_ablation/dpo_pairs_single_gpu_0513_1434/rank16_qvko_beta0p05/checkpoint
+  artifact_dir: /home/txs/work/zyp/SFT_DPO/train/outputs/dpo_beta_ablation/dpo_pairs_single_gpu_0513_1434/rank16_qvko_beta0p05/checkpoint/artifacts
+inference:
+  num_examples: 10
+  max_new_tokens: 128

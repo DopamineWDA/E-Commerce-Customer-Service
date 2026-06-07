@@ -1,0 +1,73 @@
+model:
+  # LLaMA-Factory reference: Qwen/Qwen3-4B-Instruct-2507
+  # For a single RTX 3060, Qwen2.5-1.5B-Instruct is a safer default.
+  model_name_or_path: /home/txs/work/zyp/LLM/Qwen3-8B
+  max_seq_length: 1024
+  eos_token: "<|im_end|>"
+  packing: false
+
+dataset:
+  train_file: ./data_clustered_5.7_1/train.jsonl
+  val_file: ./data_clustered_5.7_1/val.jsonl
+  preprocessing_num_workers: 4
+  dataloader_num_workers: 2
+  max_train_samples:
+  max_eval_samples:
+
+prompt:
+  system_prompt: "你是电商客服助手，负责售前咨询、售后服务、物流查询、退款、退换货、价保等各类问题，你的目标是：在尽量少的对话轮次内，帮助用户解决问题。请始终使用自然、简洁、礼貌的中文客服语气回复，优先解决用户当前问题。不要输出思考过程或模板标签；不要编造订单、物流、金额、时间等事实；如果信息不足，可以询问必要信息，但不能重复无意义问题；禁止输出无关寒暄或模板话术（如“请稍等”、“有什么可以帮您”等），除非确实必要；如果涉及操作，必须给出具体路径或下一步建议；保持语气礼貌、简洁，不要过度营销或请求好评。"
+
+lora:
+  rank: 16
+  alpha: 32
+  dropout: 0.05
+  bias: none
+  target_modules:
+    - q_proj
+    - v_proj
+    # - q_proj
+    # - k_proj
+    # - v_proj
+    # - o_proj
+    # - gate_proj
+    # - up_proj
+    # - down_proj
+distributed:
+  # Enable DeepSpeed by pointing to a JSON config file.
+  # Relative paths are resolved from this YAML file's directory.
+  # Example:
+  # deepspeed: deepspeed/ds_zero2.json
+  deepspeed: 
+
+training:
+  seed: 42
+  per_device_train_batch_size: 2
+  per_device_eval_batch_size: 2
+  gradient_accumulation_steps: 4
+  learning_rate: 1.0e-4
+  num_train_epochs: 3.0
+  lr_scheduler_type: cosine
+  warmup_ratio: 0.1
+  weight_decay: 0.0
+  gradient_checkpointing: true
+  assistant_only_loss: true
+  overwrite_output_dir: false
+  resume_from_checkpoint:
+
+logging:
+  logging_steps: 10
+  save_strategy: epoch
+  eval_strategy: epoch
+  save_total_limit: 2
+  load_best_model_at_end: true
+  metric_for_best_model: eval_loss
+  greater_is_better: false
+  report_to: none
+
+output:
+  output_dir: /home/txs/work/zyp/SFT_DPO/train/outputs/qwen3-8b_lora_sft_5.7_1/checkpoint
+  artifact_dir:  /home/txs/work/zyp/SFT_DPO/train/outputs/qwen3-8b_lora_sft_5.7_1/checkpoint/artifacts
+
+inference:
+  num_examples: 999
+  max_new_tokens: 128

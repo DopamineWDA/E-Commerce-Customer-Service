@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local environment and secrets
+.env
+.env.*
+*.pem
+*.key
+*.secret
+
+# Training outputs and caches
+train/outputs/
+train/__pycache__/
+data_preprocess/__pycache__/
+data_preprocess/audit/
+data_preprocess/cluster_audit/
+data_sft/data_cache/
+data_dpo/data_cache/
+
+# Large model / checkpoint artifacts
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+*.msgpack
+
+# Logs and generated runs
+*.log
+wandb/
+runs/
+tmp/
+temp/

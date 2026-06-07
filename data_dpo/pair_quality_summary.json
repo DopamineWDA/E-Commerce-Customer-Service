@@ -1,0 +1,20 @@
+{
+  "ranked_records": 2714,
+  "raw_pairs": 2714,
+  "kept_pairs": 2443,
+  "dropped_pairs": 271,
+  "skipped_pairs": 0,
+  "discard_fraction": 0.1,
+  "drop_threshold": 3.14,
+  "delta_stats": {
+    "min": 0.0,
+    "p10": 3.14,
+    "p30": 3.4,
+    "median": 48.72,
+    "p70": 92.1,
+    "p90": 201.84,
+    "max": 202.0,
+    "mean": 66.5712
+  },
+  "note": "Pairs with the smallest best_score - worst_score are dropped to remove weak preference signals."
+}
